@@ -1809,16 +1809,22 @@ def where(cond, x, y, keep_attrs=None):
         equivalent methods
     """
     # alignment for three arguments is complicated, so don't support it yet
-    return apply_ufunc(
-    duck_array_ops.where,
-    cond,
-    x,
-    y,
-    join="exact",
-    dataset_join="exact",
-    dask="allowed",
-    keep_attrs=keep_attrs,
-)
+    result = apply_ufunc(
+        duck_array_ops.where,
+        cond,
+        x,
+        y,
+        join="exact",
+        dataset_join="exact",
+        dask="allowed",
+        keep_attrs=False,
+    )
+
+    if keep_attrs:
+        if hasattr(x, "attrs"):
+            result.attrs = x.attrs.copy()
+
+    return result
 
 
 def polyval(coord, coeffs, degree_dim="degree"):
