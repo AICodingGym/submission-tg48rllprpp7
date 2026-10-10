@@ -1817,6 +1817,7 @@ def where(cond, x, y):
         join="exact",
         dataset_join="exact",
         dask="allowed",
+        keep_attrs=True,
     )
 
 

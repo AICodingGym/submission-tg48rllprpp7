@@ -1921,6 +1921,14 @@ def test_where() -> None:
     expected = xr.DataArray([1, 0], dims="x")
     assert_identical(expected, actual)
 
+def test_where_preserves_attrs():
+    da = xr.DataArray(1)
+    da.attrs["foo"] = "bar"
+
+    result = xr.where(da == 0, -1, da)
+
+    assert result.attrs == {"foo": "bar"}
+
 
 @pytest.mark.parametrize("use_dask", [True, False])
 @pytest.mark.parametrize("use_datetime", [True, False])
